@@ -7,7 +7,7 @@ public class Character : MonoBehaviour
     [SerializeField] private NavMeshAgent agent;
     private InputAsset _inputAsset;
     public float normalSpeed = 3.5f; // Обычная скорость
-    public float minSpeed = 1.0f;    // Минимальная скорость в зоне
+    public float minSpeed = 0.5f;    // Минимальная скорость в зоне
     private int _slowZoneArea;
     private float _targetSpeed;// Целевая скорость
     public float speedChangeRate = 2f; // Скорость изменения (чем больше, тем быстрее смена)
