@@ -7,10 +7,10 @@ public class Character : MonoBehaviour
     [SerializeField] private NavMeshAgent agent;
     private InputAsset _inputAsset;
     public float normalSpeed = 3.5f; // Обычная скорость
-    public float minSpeed = 0.5f;    // Минимальная скорость в зоне
+    public float minSpeed = 2.25f;    // Минимальная скорость в зоне
     private int _slowZoneArea;
     private float _targetSpeed;// Целевая скорость
-    public float speedChangeRate = 2f; // Скорость изменения (чем больше, тем быстрее смена)
+    public float speedChangeRate = 1f; // Скорость изменения (чем больше, тем быстрее смена)
     private bool _isInSlowZone = false; 
 
     void Start()
@@ -79,7 +79,7 @@ public class Character : MonoBehaviour
             _targetSpeed = _isInSlowZone ? minSpeed : normalSpeed;
             agent.speed = Mathf.Lerp(agent.speed, _targetSpeed, Time.deltaTime * speedChangeRate);
 
-            // Логи для отслеживания изменения скорости
+            // отслеживания изменения скорости
             if (Mathf.Abs(agent.speed - _targetSpeed) > 0.01f)
             {
                 Debug.Log($"Изменение скорости: {agent.speed:F2} -> {_targetSpeed}");
