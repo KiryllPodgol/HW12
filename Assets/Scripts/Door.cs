@@ -6,29 +6,20 @@ using UnityEngine.AI;
 public class Door : MonoBehaviour
 {
     private NavMeshObstacle Obstacle;
-
     public bool IsOpen = false;
-    [SerializeField]
-    private float Speed = 1f;
-    [SerializeField]
-    private float RotationAmount = 90f;
-    [SerializeField]
-    private float ForwardDirection = 0;
-
+    [SerializeField] private float Speed = 1f;
+    [SerializeField] private float RotationAmount = 90f;
+    [SerializeField] private float ForwardDirection = 0;
     private Vector3 StartRotation;
     private Vector3 Forward;
-
     private Coroutine AnimationCoroutine;
-
     private void Awake()
     {
         Obstacle = GetComponent<NavMeshObstacle>();
         Obstacle.carveOnlyStationary = false;
         Obstacle.carving = IsOpen;
         Obstacle.enabled = IsOpen;
-
         StartRotation = transform.rotation.eulerAngles;
-        // Since "Forward" is actually pointing into the door frame, choose a direction to think about as "Forward"
         Forward = transform.right;
     }
 
@@ -40,7 +31,6 @@ public class Door : MonoBehaviour
             {
                 StopCoroutine(AnimationCoroutine);
             }
-
             float dot = Vector3.Dot(Forward, (UserPosition - transform.position).normalized);
             AnimationCoroutine = StartCoroutine(DoRotationOpen(dot));
         }
@@ -50,7 +40,6 @@ public class Door : MonoBehaviour
     {
         Quaternion startRotation = transform.rotation;
         Quaternion endRotation;
-
         if (ForwardAmount >= ForwardDirection)
         {
             endRotation = Quaternion.Euler(new Vector3(StartRotation.x, StartRotation.y - RotationAmount, StartRotation.z));
@@ -59,9 +48,7 @@ public class Door : MonoBehaviour
         {
             endRotation = Quaternion.Euler(new Vector3(StartRotation.x, StartRotation.y + RotationAmount, StartRotation.z));
         }
-
         IsOpen = true;
-
         float time = 0;
         while (time < 1)
         {
@@ -69,11 +56,9 @@ public class Door : MonoBehaviour
             yield return null;
             time += Time.deltaTime * Speed;
         }
-
         Obstacle.enabled = true;
         Obstacle.carving = true;
     }
-
     public void Close()
     {
         if (IsOpen)
@@ -86,17 +71,13 @@ public class Door : MonoBehaviour
             AnimationCoroutine = StartCoroutine(DoRotationClose());
         }
     }
-
     private IEnumerator DoRotationClose()
     {
         Obstacle.carving = false;
         Obstacle.enabled = false;
-
         Quaternion startRotation = transform.rotation;
         Quaternion endRotation = Quaternion.Euler(StartRotation);
-
         IsOpen = false;
-
         float time = 0;
         while(time < 1)
         {
